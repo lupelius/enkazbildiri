@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback} from 'react';
+import useGoogleSheets from 'use-google-sheets';
 
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow, DirectionsService } from '@react-google-maps/api';
 
@@ -16,22 +17,31 @@ const center = {
 function MyComponent() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyA8N1E6wIQVBNFCoapNIgn4A6qhxxXFqo0"
+    googleMapsApiKey: process.env.NEXT_PUBLIC_KEY
   })
-  const data = [
-    { position: {lat: 36.217161, lng: 36.130268}, address: "Altınçay mahallesi 130 sokak TOKİ 9DGA-2 sitesi DGA-2 blok no:2F Antakya Hatay"},
-    { position: {lat: 37.570219, lng:  36.912677}, address: "Gayberli, 28011. Sokak, Onikişubat/Kahramanmaraş"},
-    { position: {lat: 37.773105, lng:   38.254780}, address: "CUMHURİYET MAH. 25136 SK. N:14B/3 MERKEZ / ADIYAMAN."},
-    {position: {lat: 36.240384, lng: 36.173394}, address: "Güzel burç Mahallesi,600 konutlar sitesi 1.blok Antaky"},
-    {position: {lat: 37.763685, lng: 38.301935}, address: "Siteler, Atatürk Bv, 02200 Adıyaman Merkez  atatürk bulvarı white star otel"}
-    
+  
+  const { data, loading, error } = useGoogleSheets({
+    apiKey: process.env.NEXT_PUBLIC_SHEET_KEY,
+    sheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
+  });
 
+  const localData = [
+    { position: {lat: 37.773105, lng:   38.254780}, address: "CUMHURİYET MAH. 25136 SK. N:14B/3 MERKEZ / ADIYAMAN."},
+    { position: {lat: 37.570219, lng:  36.912677}, address: "Gayberli, 28011. Sokak, Onikişubat/Kahramanmaraş"},
+    { position: {lat: 36.240384, lng: 36.173394}, address: "Güzel burç Mahallesi,600 konutlar sitesi 1.blok Antaky"},
+    { position: {lat: 37.763685, lng: 38.301935}, address: "Siteler, Atatürk Bv, 02200 Adıyaman Merkez  atatürk bulvarı white star otel"},
   ]
 
   const [map, setMap] = useState(null);
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
-  const [activeMarker, setActiveMarker] = useState(data[1]);
-  const [selectedPlace, setSelectedPlace] = useState({name: data[1].address, latLng: data[1].position });
+  const [activeMarker, setActiveMarker] = useState(localData[1]);
+  const [selectedPlace, setSelectedPlace] = useState({name: localData[1].address, latLng: localData[1].position });
+
+  useEffect(() => {
+    if (!loading && !error) {
+      setMap(map);
+    }
+  }, [loading])
 
   const onLoad = useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
@@ -59,7 +69,6 @@ function MyComponent() {
     onMarkerClick(args);
     setSelectedPlace({name: address, latLng: position })
   }
-  
 
   return isLoaded ? (
       <GoogleMap
@@ -70,8 +79,8 @@ function MyComponent() {
         onUnmount={onUnmount}
       >
         { /* Child components, such as markers, info windows, etc. */ }
-        { data.map(({address, position}, index) =>
-          <Marker key={index} onClick={(args) => pseudoMarkerClick(args, address, position)} position={position} name="1" />
+        { !loading && !error && data[0].data.map(({address, enlem, boylam}, index) =>
+          <Marker key={index} onClick={(args) => pseudoMarkerClick(args, address, {lat: parseFloat(enlem), lng: parseFloat(boylam)})} position={{lat: parseFloat(enlem), lng: parseFloat(boylam)}} name="1" />
         )}
         activeMarker ? <InfoWindow
           marker={activeMarker}
