@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback} from 'react';
 import useGoogleSheets from 'use-google-sheets';
 
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow, DirectionsService } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, Marker, InfoWindow, MarkerClusterer, DirectionsService } from '@react-google-maps/api';
+
 
 // @ts-ignore
 const containerStyle = {
@@ -60,7 +61,6 @@ function MyComponent() {
     };
 
   const onInfoWindowClose = () => {
-    setActiveMarker(null);
     setShowingInfoWindow(false);
   };
 
@@ -77,29 +77,33 @@ function MyComponent() {
         onLoad={onLoad}
         onUnmount={onUnmount}
       >
-        { /* Child components, such as markers, info windows, etc. */ }
-        { !loading && !error && data[0].data.map(({address, enlem, boylam}, index) =>
-          <Marker 
-            key={index} 
-            onClick={(args) => pseudoMarkerClick(args, address, {lat: parseFloat(enlem), lng: parseFloat(boylam)})} position={{lat: parseFloat(enlem), lng: parseFloat(boylam)}} 
-            name="1"
-            icon={{
-              url: "https://enkazbildiri.s3.amazonaws.com/enkaz.png", 
-              scaledSize: new google.maps.Size(67, 67)
-          }}
-          />
-        )}
-        activeMarker ? <InfoWindow
+        <MarkerClusterer minimumClusterSize={5}>
+          {(clusterer) =>
+          !loading ? !error && data[0].data.map(({address, enlem, boylam}, index) =>
+            <Marker 
+              key={index} 
+              onClick={(args) => pseudoMarkerClick(args, address, {lat: parseFloat(enlem), lng: parseFloat(boylam)})} position={{lat: parseFloat(enlem), lng: parseFloat(boylam)}} 
+              name="1"
+              icon={{
+                url: "https://enkazbildiri.s3.amazonaws.com/enkaz.png", 
+                scaledSize: new google.maps.Size(67, 67)
+              }}
+              clusterer={clusterer}
+            />
+          ) : <></>
+          }
+        </MarkerClusterer>
+        {showingInfoWindow ? <InfoWindow
           marker={activeMarker}
-          onClose={onInfoWindowClose}
-          visible={showingInfoWindow}
+          onCloseClick={onInfoWindowClose}
+          visible={true}
           position={activeMarker?.latLng ? activeMarker?.latLng : center}
         >
           <div>
             <h1>Enlem: {selectedPlace?.latLng?.lat} Boylam: {selectedPlace?.latLng?.lng}</h1>
             <h4>{selectedPlace?.name}</h4>
           </div>
-        </InfoWindow> : null
+        </InfoWindow> : null}
         map()
       </GoogleMap>
   ) : <></>
