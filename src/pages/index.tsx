@@ -26,7 +26,6 @@ function MyComponent() {
   });
 
   const localData = [
-    { position: {lat: 37.773105, lng:   38.254780}, address: "CUMHURİYET MAH. 25136 SK. N:14B/3 MERKEZ / ADIYAMAN."},
     { position: {lat: 37.570219, lng:  36.912677}, address: "Gayberli, 28011. Sokak, Onikişubat/Kahramanmaraş"},
     { position: {lat: 36.240384, lng: 36.173394}, address: "Güzel burç Mahallesi,600 konutlar sitesi 1.blok Antaky"},
     { position: {lat: 37.763685, lng: 38.301935}, address: "Siteler, Atatürk Bv, 02200 Adıyaman Merkez  atatürk bulvarı white star otel"},
@@ -34,8 +33,8 @@ function MyComponent() {
 
   const [map, setMap] = useState(null);
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
-  const [activeMarker, setActiveMarker] = useState(localData[1]);
-  const [selectedPlace, setSelectedPlace] = useState({name: localData[1].address, latLng: localData[1].position });
+  const [activeMarker, setActiveMarker] = useState(localData[0]);
+  const [selectedPlace, setSelectedPlace] = useState({name: localData[0].address, latLng: localData[0].position });
 
   useEffect(() => {
     if (!loading && !error) {
@@ -80,7 +79,15 @@ function MyComponent() {
       >
         { /* Child components, such as markers, info windows, etc. */ }
         { !loading && !error && data[0].data.map(({address, enlem, boylam}, index) =>
-          <Marker key={index} onClick={(args) => pseudoMarkerClick(args, address, {lat: parseFloat(enlem), lng: parseFloat(boylam)})} position={{lat: parseFloat(enlem), lng: parseFloat(boylam)}} name="1" />
+          <Marker 
+            key={index} 
+            onClick={(args) => pseudoMarkerClick(args, address, {lat: parseFloat(enlem), lng: parseFloat(boylam)})} position={{lat: parseFloat(enlem), lng: parseFloat(boylam)}} 
+            name="1"
+            icon={{
+              url: "https://enkazbildiri.s3.amazonaws.com/enkaz.png", 
+              scaledSize: new google.maps.Size(67, 67)
+          }}
+          />
         )}
         activeMarker ? <InfoWindow
           marker={activeMarker}
