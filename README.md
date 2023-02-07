@@ -1,3 +1,22 @@
+Dostlar basit bir NextJS web app tasarladim, amac hizlica kullanima acilmasi, basitce google maps ve google drive'da duran bir spreadsheet kullaniyor (yeni adres herkes ekleyebilir), vercel'den hizlica cikardigim live adresi:
+
+https://enkazbildiri.vercel.app/
+
+verileri direk bu acik paylasim spreadsheet ile aliyor ( lat lon yani enlem boylam, dogru adresi google mapsde aratarak rahatca bulabilirsiniz ) review yok sadece giris yapanin vicdanina kalmis
+
+https://docs.google.com/spreadsheets/d/1sdx30WDtnXrF_cqt__RDunr2s75n4hbh10EFotPZRGc/edit#gid=0
+
+devops tarafi vercelden yapildi asagida
+
+https://vercel.com/serdarsenay/enkazbildiri
+
+acik kaynak github adresi bu, lutfen ekleme yapmak icin istek gonderin kabul edeyim
+
+https://github.com/lupelius/enkazbildiri
+
+Umarim esas appler cikmadan hizlica kullanima cikaririz ve bir ise yarar ve dikkat dagitmaz
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
