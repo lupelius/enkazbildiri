@@ -119,7 +119,7 @@ function MyComponent() {
           visible={true}
           position={activeMarker?.latLng ? activeMarker?.latLng : center}
         >
-          <div>
+          <div style={{color: "black"}}>
             <h1>{selectedPlace?.name}</h1>
             <strong>Enlem: {selectedPlace?.latLng?.lat} Boylam: {selectedPlace?.latLng?.lng}</strong>
             <br />
