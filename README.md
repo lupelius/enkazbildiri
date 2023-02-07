@@ -1,6 +1,6 @@
 Dostlar basit bir NextJS web app tasarladim, amac hizlica kullanima acilmasi, basitce google maps ve google drive'da duran bir spreadsheet kullaniyor (yeni adres herkes ekleyebilir), vercel'den hizlica cikardigim live adresi:
 
-https://enkazbildiri.vercel.app/
+https://afetbildir.in/ - alternatif: https://enkazbildiri.vercel.app/
 
 verileri direk bu acik paylasim spreadsheet ile aliyor ( lat lon yani enlem boylam, dogru adresi google mapsde aratarak rahatca bulabilirsiniz ) review yok sadece giris yapanin vicdanina kalmis
 
